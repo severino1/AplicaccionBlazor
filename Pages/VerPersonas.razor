@@ -1,0 +1,244 @@
+@page "/VerPersonas"
+@using Tarea9y10.Data
+@inject ServicioPersona servicio
+
+<h2>Registrados</h2>
+<div class="container">
+    <div class="row bg-light">
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    
+                    <th>ID</th>
+                    <th>Foto</th>
+                    <th>Nombre(s)</th>
+                    <th>apellido(s)</th>
+                    <th>Genero</th>
+                    <th>Fecha de nacimiento</th>
+                    <th>Pais de nacimiento</th>
+                    <th>Ciudad de nacimiento</th>
+                    <th>Pais de residencia</th>
+                    <th>Ciudad de residencia</th>
+                    <th>Direccion</th>
+                    <th>Telefono</th>
+                    <th>Celular</th>
+                    <th>E-Mail</th>
+                    <th>Tipo de documento</th>
+                    <th>Documento de identidad</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (personas.Any())
+                {
+                    @foreach (var persona in personas)
+                    { 
+                        <tr>
+                            <td>@persona.PersonaId</td>
+                            <td><img src="@persona.img" width="100" height="100" ></td>
+                            <td>@persona.nombre</td>
+                            <td>@persona.apellido</td>
+                            <td>@persona.genero</td>
+                            <td>@persona.fechaNacimiento</td>
+                            <td>@persona.PaisNacimiento</td>
+                            <td>@persona.CiudadNacimiento</td>
+                            <td>@persona.PaisResidencia</td>
+                            <td>@persona.CiudadResidencia</td>
+                            <td>@persona.Direccion</td>
+                            <td>@persona.telefonoPer</td>
+                            <td>@persona.celular</td>
+                            <td>@persona.correo</td>
+                            <td>@persona.TipoDocumento</td>
+                            <td>@persona.DocuIdentidad</td>
+                        </tr>
+                    } 
+                }
+                else
+                {
+                    <tr><td colspan="6"><strong>No hay añadidos</strong></td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="container">
+    <div class="row bg-light">
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre(s)</th>
+                    <th>apellido(s)</th>
+                    <th>Estado civil</th>
+                    <th>Hijos</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (personas.Any())
+                {
+                    @foreach (var persona in personas)
+                    { 
+                        <tr>
+                            <td>@persona.PersonaId</td>
+                            <td>@persona.nombre</td>
+                            <td>@persona.apellido</td>
+                            <td>@persona.EstadoCivil</td>
+                            <td>@persona.Hijos</td>
+                        </tr>
+                    } 
+                }
+                else
+                {
+                    <tr><td colspan="6"><strong>No hay integrantes</strong></td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row bg-light">
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre(s)</th>
+                    <th>apellido(s)</th>
+                    <th>Profesion</th>
+                    <th>Ocupacion</th>
+                    <th>Nombre de la empresa</th>
+                    <th>Telefono</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (personas.Any())
+                {
+                    @foreach (var persona in personas)
+                    { 
+                        <tr>
+                            <td>@persona.PersonaId</td>
+                            <td>@persona.nombre</td>
+                            <td>@persona.apellido</td>
+                            <td>@persona.Profesion</td>
+                            <td>@persona.Ocupacion</td>
+                            <td>@persona.NombreEmpresa</td>
+                            <td>@persona.TelefonoEmp</td>
+                        </tr>
+                    } 
+                }
+                else
+                {
+                    <tr><td colspan="6"><strong>No hay integrantes</strong></td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row bg-light">
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre(s)</th>
+                    <th>apellido(s)</th>
+                    <th>Fecha de conversion</th>
+                    <th>Fecha de bautismo</th>
+                    <th>Fecha de aceptacion</th>
+                    <th>Denominacion</th>
+                    <th>Nombre de la iglesia</th>
+                    <th>Congregacion anterior</th>
+                    <th>Nombre del pastor</th>
+                    <th>Disciplinado</th>
+                    <th>Causas</th>
+                    <th>Funciones</th>
+                    <th>Ministerios servidos</th>
+                    <th>Ministerio con mayor fruto</th>
+                    <th>Ministerio llamado</th>
+                    <th>Metas</th>
+                    <th>Respaldo</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (personas.Any())
+                {
+                    @foreach (var persona in personas)
+                    { 
+                        <tr>
+                            <td>@persona.PersonaId</td>
+                            <td>@persona.nombre</td>
+                            <td>@persona.apellido</td>
+                            <td>@persona.FechaConversion</td>
+                            <td>@persona.FechaBautismo</td>
+                            <td>@persona.FechaAceptado</td>
+                            <td>@persona.Denominacion</td>
+                            <td>@persona.NombreIglesia</td>
+                            <td>@persona.IglesiaAnterior</td>
+                            <td>@persona.NombrePastor</td>
+                            <td>@persona.Disciplinado</td>
+                            <td>@persona.Causas</td>
+                            <td>@persona.Funciones</td>
+                            <td>@persona.Ministerios</td>
+                            <td>@persona.MinisterioMayorFruto</td>
+                            <td>@persona.MinisterioLlamado</td>
+                            <td>@persona.Metas</td>
+                            <td>@persona.Respaldo</td>
+                        </tr>
+                    } 
+                }
+                else
+                {
+                    <tr><td colspan="6"><strong>No hay integrantes</strong></td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row bg-light">
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre(s)</th>
+                    <th>apellido(s)</th>
+                    <th>Nivel de estudio</th>
+                    <th>Expulsado o suspendido</th>
+                    <th>Razon</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (personas.Any())
+                {
+                    @foreach (var persona in personas)
+                    { 
+                        <tr>
+                            <td>@persona.PersonaId</td>
+                            <td>@persona.nombre</td>
+                            <td>@persona.apellido</td>
+                            <td>@persona.NivelEstudio</td>
+                            <td>@persona.ExpulsadoIns</td>
+                            <td>@persona.Razon</td>
+                        </tr>
+                    } 
+                }
+                else
+                {
+                    <tr><td colspan="6"><strong>No hay integrantes</strong></td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+@code {
+    List<Persona> personas = new List<Persona>();
+    protected override async Task OnInitializedAsync()
+    {
+        await RefreshPersona();
+    }
+    private async Task RefreshPersona()
+    {
+        personas = await servicio.VerPersonasAsync();
+    }
+}

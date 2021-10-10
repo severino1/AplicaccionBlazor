@@ -1,0 +1,526 @@
+@page "/GestorPersonas"
+@using Tarea9y10.Data
+@inject ServicioPersona servicio
+
+<h1>Agregar persona</h1>
+
+<div class="container">
+    <div class="row bg-light">
+        <table class="table table-sm ">
+            <thead class="thead-dark">
+                <tr>
+                    
+                    <th>ID</th>
+                    <th>Foto</th>
+                    <th>Nombre(s)</th>
+                    <th>apellido(s)</th>
+                    <th>telefono</th>
+                    <th>correo</th>
+                    <th>Tipo de documento</th>
+                    <th>Documento de identidad</th>
+                    <th>Eliminar reporte</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (personas.Any())
+                {
+                    @foreach (var persona in personas){ 
+
+                        <tr @onclick="(() => SetPersonaForUpdate(persona))">
+                            
+                            <td>@persona.PersonaId</td>
+                            <td><img src="@persona.img" width="100" height="100" ></td>
+                            <td>@persona.nombre</td>
+                            <td>@persona.apellido</td>
+                            <td>@persona.telefonoPer</td>
+                            <td>@persona.correo</td>
+                            <td>@persona.TipoDocumento</td>
+                            <td>@persona.DocuIdentidad</td>
+                            <td><button class="btn btn-danger" @onclick="(() => DeletePersona(persona))">Eliminar</button></td>
+                            
+                        </tr> 
+                    } 
+                }
+                else
+                {
+                    <tr><td colspan="6"><strong>No hay integrantes</strong></td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+   
+    <!-- Button trigger modal -->
+<button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">Agregar integrante</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+
+        <h5 class="modal-title" id="exampleModalLabel">Agregando integrante</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+        <div>
+            
+            <EditForm Model="@NewPersona">
+                <div class="p-3 mb-3 bg-dark text-white text-center">Datos personales</div>
+                <div class="form-group">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" id="nombre" class="form-control" @bind-value="@NewPersona.nombre" />
+                </div>
+                <div class="form-group">
+                    <label for="apellido">Apellidos</label>
+                    <input type="text" id="apellido" class="form-control" @bind="@NewPersona.apellido" />
+                </div>
+                <label for="lugar">Genero</label>
+                <p>
+                    <label>
+                        <input type="radio" value="Hombre" name="Genero" @onclick="@(e=>GeneroRa("Hombre"))"/>Hombre
+                    </label>
+                    <label>
+                        <input type="radio" value="Mujer" name="Genero"  @onclick="@(e=>GeneroRa("Mujer"))" />Mujer
+                    </label>   
+                </p>
+                <div class="form-group">
+                    <label for="fecha">Fecha de nacimiento</label>
+                    <input type="date" id="fecha" class="form-control" @bind="@NewPersona.fechaNacimiento"  />
+                </div>
+                <div class="form-group">
+                    <label for="apellido">Pais de nacimiento</label>
+                    <input type="text" id="apellido" class="form-control" @bind="@NewPersona.PaisNacimiento" />
+                </div>
+                <div class="form-group">
+                    <label for="telefono">Ciudad de nacimiento</label>
+                    <input type="text" id="telefono" class="form-control" @bind="@NewPersona.CiudadNacimiento" />
+                </div>
+                <div class="form-group">
+                    <label for="telefono">Pais de residencia actual</label>
+                    <input type="text" id="telefono" class="form-control" @bind="@NewPersona.PaisResidencia" />
+                </div>
+                <div class="form-group">
+                    <label for="telefono">Ciudad de residencia actual</label>
+                    <input type="text" id="telefono" class="form-control" @bind="@NewPersona.CiudadResidencia" />
+                </div>
+                <div class="form-group">
+                    <label for="telefono">Direccion</label>
+                    <input type="text" id="telefono" class="form-control" @bind="@NewPersona.Direccion" />
+                </div>
+                <div class="form-group">
+                    <label for="telefono">Telefono</label>
+                    <input type="text" id="telefono" class="form-control" @bind="@NewPersona.telefonoPer" />
+                </div>
+                <div class="form-group">
+                    <label for="telefono">Celular</label>
+                    <input type="text" id="telefono" class="form-control" @bind="@NewPersona.celular" />
+                </div>
+                <div class="form-group">
+                    <label for="correo">E-Mail</label>
+                    <input type="text" id="correo" class="form-control" @bind="@NewPersona.correo" />
+                </div>
+                <label for="lugar">Tipo de documento de identidad</label>
+                <p>
+                    <label>
+                        <input type="radio" value="Cedula" name="TipoDocu" @onclick="@(i=>TipoDocuRa("Cedula"))"/>Cedula
+                    </label>  
+                    <label>
+                        <input type="radio" value="Pasaporte" name="TipoDocu" @onclick="@(i=>TipoDocuRa("Pasaporte"))"/>Pasaporte
+                    </label>
+                    <label>
+                        <input type="radio" value="DNI" name="TipoDocu" @onclick="@(i=>TipoDocuRa("DNI"))"/>DNI
+                    </label>
+                </p>
+                <div class="form-group">
+                    <label for="cedula">Documento de identidad</label>
+                    <input type="text" id="cedula" class="form-control" @bind="@NewPersona.DocuIdentidad" />
+                </div>
+                <div class="p-3 mb-3 bg-dark text-white text-center">Datos familiares</div>
+                <label for="lugar">Estado civil</label>
+                <p>
+                    <label>
+                        <input type="radio" value="Soltero" name="EstadoCivil" @onclick="@(a=>EstadoCivilRa("Soltero"))"/>Soltero
+                    </label>
+
+                    <label>
+                        <input type="radio" value="Casado" name="EstadoCivil" @onclick="@(a=>EstadoCivilRa("Casado"))"/>Casado
+                    </label>
+                </p>
+                <label for="lugar">Tienes hijos?</label>
+                <p>
+                    <label>
+                        <input type="radio" value="Si" name="hijos" @onclick="@(b=>HijosRa("Si"))"/>Si
+                    </label>
+                    <label>
+                        <input type="radio" value="No" name="hijos" @onclick="@(b=>HijosRa("No"))"/>No
+                    </label>
+                </p>
+                <div class="form-group">
+                    <label for="lugar">Profesion</label>
+                    <input type="text" id="lugar" class="form-control" @bind="@NewPersona.Profesion" />
+                </div>
+                <div class="form-group">
+                    <label for="latitud">Nombre de la empresa o negocio</label>
+                    <input type="text" id="latitud" class="form-control" @bind="@NewPersona.NombreEmpresa" />
+                </div>
+                <div class="form-group">
+                    <label for="longitud">Ocupacion</label>
+                    <input type="text" id="longitud" class="form-control" @bind="@NewPersona.Ocupacion" />
+                </div>
+                <div class="form-group">
+                    <label for="Descripcion">Telefono</label>
+                    <input type="text" id="Descripcion" class="form-control" @bind="@NewPersona.TelefonoEmp" />
+                </div>
+
+                <div class="form-group">
+                    <label for="fecha">Fecha de conversion</label>
+                    <input type="date" id="fecha" class="form-control" @bind="@NewPersona.FechaConversion"  />
+                </div>
+                <div class="form-group">
+                    <label for="fecha">Fecha de bautismo</label>
+                    <input type="date" id="fecha" class="form-control" @bind="@NewPersona.FechaBautismo"  />
+                </div>
+                <div class="form-group">
+                    <label for="fecha">Fecha en la que fue aceptado formalmente como miembro de la iglesia</label>
+                    <input type="date" id="fecha" class="form-control" @bind="@NewPersona.FechaAceptado"  />
+                </div>
+                <label for="lugar">Denominacion a la que pertenece:</label>
+                <p>
+                    <div>
+                        <label>
+                            <input type="radio" value="Bautista" name="Denominacion" @onclick="@(c=>DenominacionRa("Bautista"))"/>Bautista
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <input type="radio" value="Pentecostal" name="Denominacion" @onclick="@(c=>DenominacionRa("Pentecostal"))"/>Pentecostal
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <input type="radio" value="Metodista" name="Denominacion" @onclick="@(c=>DenominacionRa("Metodista"))"/>Metodista
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <input type="radio" value="Catolica" name="Denominacion" @onclick="@(c=>DenominacionRa("Catolica"))"/>Catolica
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <input type="radio" value="Presbiteriana" name="Denominacion" @onclick="@(c=>DenominacionRa("Presbiteriana"))"/>Presbiteriana
+                        </label>  
+                    </div>
+                    <div>
+                        <label>
+                            <input type="radio" value="Adventista" name="Denominacion" @onclick="@(c=>DenominacionRa("Adventista"))"/>Adventista
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <input type="radio" value="Templo Biblico" name="Denominacion" @onclick="@(c=>DenominacionRa("Templo Biblico"))"/>Templo Biblico
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <input type="radio" value="Menonita" name="Denominacion" @onclick="@(c=>DenominacionRa("Menonita"))"/>Menonita
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <input type="radio" value="Luterana" name="Denominacion" @onclick="@(c=>DenominacionRa("Luterana"))"/>Luterana
+                        </label>
+                    </div> 
+                </p>
+                <div class="form-group">
+                    <label for="fecha">Nombre de la iglesia a la que asiste actualmente</label>
+                    <input type="text" id="fecha" class="form-control" @bind="@NewPersona.NombreIglesia"  />
+                </div>
+                <div class="form-group">
+                    <label for="fecha">Donde se congregaba antes?</label>
+                    <input type="text" id="fecha" class="form-control" @bind="@NewPersona.IglesiaAnterior"  />
+                </div>
+                <div class="form-group">
+                    <label for="fecha">Nombre del pastor de su iglesia</label>
+                    <input type="text" id="fecha" class="form-control" @bind="@NewPersona.NombrePastor"  />
+                </div>
+                <label for="fecha">¿Ha sido disciplinado alguna vez?</label>
+                <p>
+                    <label>
+                        <input type="radio" value="Si" name="disciplina" @onclick="@(q=>DisciplinaRa("Si"))"/>Si
+                    </label>
+                    <label>
+                        <input type="radio" value="No" name="disciplina" @onclick="@(q=>DisciplinaRa("No"))"/>No
+                    </label>
+                </p>
+                <div class="form-group">
+                    <label for="fecha">Causas</label>
+                    <input type="text" id="fecha" class="form-control" @bind="@NewPersona.Causas"  />
+                </div>
+                <label for="fecha">En la actualidad ocupa usted alguna de estas funciones:</label>
+                <p>
+                    <div>
+                        <label>
+                            <input type="radio" value="Pastor" name="funciones" @onclick="@(d=>FuncionesRa("Pastor"))"/>Pastor
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                             <input type="radio" value="Anciano" name="funciones" @onclick="@(d=>FuncionesRa("Anciano"))"/>Anciano
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <input type="radio" value="Diacono" name="funciones" @onclick="@(d=>FuncionesRa("Diacono"))"/>Diacono
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <input type="radio" value="Misionero" name="funciones" @onclick="@(d=>FuncionesRa("Misionero"))"/>Misionero
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <input type="radio" value="Lider Escuela Dominical" name="funciones" @onclick="@(d=>FuncionesRa("Lider Escuela Dominical"))"/>Lider Escuela Dominical
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <input type="radio" value="Lider Minist. de Jovenes" name="funciones" @onclick="@(d=>FuncionesRa("Lider Minist. de Jovenes"))"/>Lider Minist. de Jovenes
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <input type="radio" value="Lider Minist. de caballeros" name="funciones" @onclick="@(d=>FuncionesRa("Lider Minist. de caballeros"))"/>Lider Minist. de caballeros
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <input type="radio" value="Lider Minist. de Damas" name="funciones" @onclick="@(d=>FuncionesRa("Lider Minist. de Damas"))"/>Lider Minist. de Damas
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <input type="radio" value="Lider Minist. de Niños" name="funciones" @onclick="@(d=>FuncionesRa("Lider Minist. de Niños"))"/>Lider Minist. de Niños
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <input type="radio" value="Lider Minist. de Matrimonios" name="funciones" @onclick="@(d=>FuncionesRa("Lider Minist. de Matrimonios"))"/>Lider Minist. de Matrimonios
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <input type="radio" value="Lider de Grupo Pequeño" name="funciones" @onclick="@(d=>FuncionesRa("Lider de Grupo Pequeño"))"/>Lider de Grupo Pequeño
+                        </label> 
+                    </div>
+                </p>
+                <div class="form-group">
+                    <label for="fecha">Cuales son los ministerios a los que ha servido?</label>
+                    <input type="text" id="fecha" class="form-control" @bind="@NewPersona.Ministerios"  />
+                </div>
+                <div class="form-group">
+                    <label for="fecha">En cual de estos ministerios cosidera que tuvo mayor fruto? Por que?</label>
+                    <input type="text" id="fecha" class="form-control" @bind="@NewPersona.MinisterioMayorFruto"  />
+                </div>
+                <div class="form-group">
+                    <label for="fecha">A que ministerios cree usted que Dios lo esta llamando?</label>
+                    <input type="text" id="fecha" class="form-control" @bind="@NewPersona.MinisterioLlamado"  />
+                </div>
+                <div class="form-group">
+                    <label for="fecha">Que metas tiene para su vida?</label>
+                    <input type="text" id="fecha" class="form-control" @bind="@NewPersona.Metas"  />
+                </div>
+                <label for="fecha">¿Cuenta con el respaldo de sus autoridades eclesiásticas para realizar estos estudios?</label>
+                <p>
+                    <label>
+                        <input type="radio" value="Si" name="respaldo" @onclick="@(w=>RespaldoRa("Si"))"/>Si
+                    </label>
+                    <label>
+                        <input type="radio" value="No" name="respaldo" @onclick="@(w=>RespaldoRa("No"))"/>No
+                    </label>
+                </p>
+                <label for="fecha">Nivel de estudio:</label>
+                <p>
+                    <div>
+                         <label>
+                            <input type="radio" value="Primaria" name="NivelAcademico" @onclick="@(j=>NivelAcademicoRa("Primaria"))"/>Primaria
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <input type="radio" value="Secundaria" name="NivelAcademico" @onclick="@(j=>NivelAcademicoRa("Secundaria"))"/>Secundaria
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <input type="radio" value="Tecnico" name="NivelAcademico" @onclick="@(j=>NivelAcademicoRa("Tecnico"))"/>Tecnico
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <input type="radio" value="Grado" name="NivelAcademico" @onclick="@(j=>NivelAcademicoRa("Grado"))"/>Grado
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <input type="radio" value="Postgrado-Maestria" name="NivelAcademico" @onclick="@(j=>NivelAcademicoRa("Postgrado-Maestria"))"/>Postgrado-Maestria
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <input type="radio" value="Doctorado" name="NivelAcademico" @onclick="@(j=>NivelAcademicoRa("Doctorado"))"/>Doctorado
+                        </label>
+                    </div>                
+                </p>
+                <label for="fecha">¿Alguna vez ha sido expulsado o suspendido de alguna institución?</label>
+                <p>
+                    <label>
+                        <input type="radio" value="Si" name="ExpulsadoIns" @onclick="@(x=>ExpulsadoInsRa("Si"))"/>Si
+                    </label>
+                    <label>
+                        <input type="radio" value="No" name="ExpulsadoIns" @onclick="@(x=>ExpulsadoInsRa("No"))"/>No
+                    </label> 
+                </p>
+                <div class="form-group">
+                    <label for="fecha">En caso afirmativo, Por que razon?</label>
+                        <input type="text" id="fecha" class="form-control" @bind="@NewPersona.Razon"/>
+                </div>
+                <div class="form-group">
+                    <label for="nombre">Foto</label>
+                    <InputFile OnChange="HandleSelectImagen"></InputFile>
+                </div>
+                <div class="text-center p-3 mb-3">
+                    <button class="btn btn-dark" @onclick="AddNewPersona">Agregar integrante</button>
+                </div>
+            </EditForm>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+    
+@code {
+
+
+    IFileListEntry image;
+     async Task HandleSelectImagen(IFileListEntry[] images )
+     {
+        image = images.FirstOrDefault();
+
+    }
+
+    string Genero;
+    string TipoDocu;
+    string EstadoCivil;
+    string hijos;
+    string Denominacion;
+    string disciplina;
+    string funciones;
+    string respaldo;
+    string NivelAcademico;
+    string ExpulsadoIns;
+    string PaisNa;
+
+    
+    
+    private void ExpulsadoInsRa(string _expulsadosins)
+    {
+        ExpulsadoIns = _expulsadosins;
+    }
+    private void NivelAcademicoRa(string _nivelacademico)
+    {
+        NivelAcademico = _nivelacademico;
+    }
+    private void RespaldoRa(string _respaldo)
+    {
+        respaldo = _respaldo;
+    }
+    private void FuncionesRa(string _funciones)
+    {
+        funciones = _funciones;
+    }
+    private void DisciplinaRa(string _disciplina)
+    {
+        disciplina = _disciplina;
+    }
+    private void DenominacionRa(string _denominacion)
+    {
+        Denominacion = _denominacion;
+    }
+    private void HijosRa(string _hijos)
+    {
+        hijos = _hijos;
+    }
+    private void EstadoCivilRa(string _estadocivil)
+    {
+        EstadoCivil = _estadocivil;
+    }
+    private void GeneroRa(string _genero)
+    {
+        Genero =_genero;
+    }
+    private void TipoDocuRa(string _tipodocu)
+    {
+        TipoDocu = _tipodocu;
+    }
+
+    List<Persona> personas = new List<Persona>();
+        
+    protected override async Task OnInitializedAsync()
+    {
+        
+        await RefreshPersona();
+        
+    }
+    
+    private async Task RefreshPersona()
+    {
+        personas = await servicio.VerPersonasAsync();
+    }
+    public Persona NewPersona { get; set; } = new Persona();
+    private async Task AddNewPersona()
+    {
+        
+        NewPersona.genero = Genero;
+        NewPersona.TipoDocumento = TipoDocu;
+        NewPersona.EstadoCivil = EstadoCivil;
+        NewPersona.Hijos = hijos;
+        NewPersona.Denominacion = Denominacion;
+        NewPersona.Disciplinado = disciplina;
+        NewPersona.Funciones = funciones;
+        NewPersona.Respaldo = respaldo;
+        NewPersona.NivelEstudio = NivelAcademico;
+        NewPersona.ExpulsadoIns = ExpulsadoIns;
+        await servicio.AddPersonaAsync(NewPersona, image);
+        NewPersona = new Persona();
+        await RefreshPersona();
+    }
+    
+    
+    Persona UpdatePersona = new Persona();
+    private void SetPersonaForUpdate(Persona persona)
+    {
+        UpdatePersona = persona;
+    }
+    private async Task UpdatePersonaData()
+    {
+        await servicio.UpdatePersonaAsync(UpdatePersona, image);
+        await RefreshPersona();
+    }
+    private async Task DeletePersona(Persona persona)
+    {
+        await servicio.DeletePersonaAsync(persona);
+        await RefreshPersona();
+    } 
+}
